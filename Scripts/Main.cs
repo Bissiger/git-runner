@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using CVRunner.Controller;
 
 namespace CVRunner
 {
@@ -11,12 +12,14 @@ namespace CVRunner
 
         private GameObject _controllers;
         private CameraMover _cameraMover;
+        private DirectionController _directionController;
 
         private void Start()
         {
             Instance = this;
             _controllers = new GameObject { name = "AllControllers" };
             _cameraMover = GameObject.Find("Main Camera").transform.GetComponent<CameraMover>();
+            _directionController = new DirectionController();
         }
 
         #region Property
@@ -26,6 +29,11 @@ namespace CVRunner
         public CameraMover GetCameraMover
         {
             get { return _cameraMover; }
+        }
+
+        public DirectionController GetDirectionControlelr
+        {
+            get { return _directionController; }
         }
         #endregion
     }
