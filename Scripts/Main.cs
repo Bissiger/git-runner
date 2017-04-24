@@ -11,7 +11,7 @@ namespace CVRunner
         public static Main Instance { get; private set; }
 
         private GameObject _controllers;
-        private CameraMover _cameraMover;
+        private CameraMover _cameraMover; 
         private DirectionController _directionController;
 
         private void Start()
@@ -24,14 +24,17 @@ namespace CVRunner
 
         #region Property
         /// <summary>
-        /// Get DirectionController controller
+        /// Get GetCameraMover controller
         /// </summary>
         public CameraMover GetCameraMover
         {
             get { return _cameraMover; }
         }
 
-        public DirectionController GetDirectionControlelr
+        /// <summary>
+        /// Get DirectionController controller
+        /// </summary>
+        public DirectionController GetDirectionController
         {
             get { return _directionController; }
         }
