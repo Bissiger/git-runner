@@ -6,8 +6,6 @@ namespace CVRunner
     {
 
         [SerializeField] private float _speed = 0.3f;       //Speed of camera mooving
-        [SerializeField] private GameObject targetPos;      //Camera will be moved to this target
-        [SerializeField] private float _distToObj = 2.5f;   //Distance to object from Camera   
         private bool isActive = false;                      //flag ON/OFF moving
 
         private void Update()
@@ -31,13 +29,21 @@ namespace CVRunner
         public void MoveCamera()
         {
             if (!isActive) return;
-            Vector3 tmpTargetPos = targetPos.transform.position;
-            if (Position != tmpTargetPos)
+            Vector3 targetPos = Main.Instance.GetPlayer.transform.GetChild(1).transform.position;
+            Quaternion targetRot = Main.Instance.GetPlayer.transform.GetChild(1).transform.rotation;
+
+            if (Position != targetPos)
             {
-                float x = Mathf.Lerp(Position.x, tmpTargetPos.x, _speed * Time.deltaTime);
-                float y = Mathf.Lerp(Position.y, tmpTargetPos.y, _speed * Time.deltaTime);
-                float z = Mathf.Lerp(Position.z, tmpTargetPos.z-_distToObj, _speed * Time.deltaTime);
-                Position = new Vector3 (x,y,z);
+                float pos_x = Mathf.Lerp(Position.x, targetPos.x, _speed * Time.deltaTime);
+                float pos_y = Mathf.Lerp(Position.y, targetPos.y, _speed * Time.deltaTime);
+                float pos_z = Mathf.Lerp(Position.z, targetPos.z, _speed * Time.deltaTime);
+                Position = new Vector3 (pos_x, pos_y, pos_z);
+
+                float rot_x = Mathf.Lerp(Rotation.x, targetRot.x, _speed * Time.deltaTime);
+                float rot_y = Mathf.Lerp(Rotation.y, targetRot.y, _speed * Time.deltaTime);
+                float rot_z = Mathf.Lerp(Rotation.z, targetRot.z, _speed * Time.deltaTime);
+                float rot_w = Mathf.Lerp(Rotation.w, targetRot.w, _speed * Time.deltaTime);
+                Rotation = new Quaternion(rot_x, rot_y, rot_z, rot_w);
             }
         }
     }
