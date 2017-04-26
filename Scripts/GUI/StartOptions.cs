@@ -54,6 +54,7 @@ namespace CVRunner
             //    StartGameInScene();
             //}
             Main.Instance.GetCameraMover.On();
+            Main.Instance.GetPlayer.GetComponent<Animation>().Play();
             HideDelayed();
 
         }
