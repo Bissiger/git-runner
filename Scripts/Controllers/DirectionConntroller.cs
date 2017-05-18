@@ -43,27 +43,27 @@ namespace CVRunner.Controller
 
             Vector2 delta = Input.GetTouch(0).deltaPosition;
 
-            if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
-            {
+             if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+             {
                 if (delta.x > 0) _x = right;
                 else _x = left;
-            }
-            else
-            {
+             }
+             else
+             {
                 if (delta.y > 0) _y = up;
                 else _y = down;
-            }
+             }
 
-            _tmpDirection = new Vector2(_x, _y);
+             _tmpDirection = new Vector2(_x, _y);
 
-            if (Input.touches[0].phase == TouchPhase.Moved)
-            {
+             if (Input.touches[0].phase == TouchPhase.Moved)
+             {
                 _direction = _tmpDirection;
-            }
-            if (Input.touches[0].phase == TouchPhase.Ended)
-            {
+             }
+             if (Input.touches[0].phase == TouchPhase.Ended)
+             {
                 _direction = _resetDirection;
-            }
+             }
         }
         #endregion
     }
