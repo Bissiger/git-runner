@@ -4,23 +4,86 @@ namespace CVRunner
 {
     public class PlayerMover : BaseObjectScene
     {
-        private float speed = 0.2f; //Speed of moving
+        //Speed of moving
+        [SerializeField] private float speed = 0.2f;
+        //Deviation from player position at wich you can choose different direction
+        [SerializeField] private float deviation = 0.5f;
 
-        //Corners of field
-        private int maxPos = 5;
-        private int minPos = -5;
+        //Corners of game field
+        private float maxCornerX = -3.4f;
+        private float minCornerX = -13.6f;
+
+        //Player will be moving to this position after Start Animation
+        private float targetPosX = -6.8f; 
+  
+        //Step for set next target
+        private float step = 3.4f;
+
+        //Position from player come
+        private float lastPos;
+
+        //Helpers
+        private Vector2 resetDirection = new Vector2(0, 0);
+        private Vector2 tmpDirection = new Vector2(0,0);
+        private bool isSetPosition = true;
+      
+        private void Start()
+        {
+            lastPos = Position.x;
+        }
 
         void Update()
         {
-            Move(Main.Instance.GetDirectionController.GetDirection);
+            SetDirection(Main.Instance.GetDirectionController.GetDirection);
+            SetPosition();
+            Move();
         }
 
-        // Direction always have value 1, -1 or 0
-        private void Move(Vector2 direction)
+        //Just set direction of moving
+        private void SetDirection(Vector2 direction)
         {
-            Vector3 tmpPosition = new Vector3(Position.x + (speed * direction.x), Position.y, Position.z);
-              if (tmpPosition.x < minPos || tmpPosition.x > maxPos) return;
-            Position = tmpPosition;
+            if(direction.x != 0 && tmpDirection == resetDirection)
+            { 
+                tmpDirection = direction;
+            }
+        }
+
+        //Move in set tmpDirection with set speed
+        private void Move()
+        {
+            // move left (directin always -1, 0 ro 1)
+            if(tmpDirection.x < 0 && targetPosX < Position.x)
+            { 
+                float pos_x = Position.x + (speed * tmpDirection.x);
+                Position = new Vector3(pos_x, Position.y, Position.z);
+                return;
+            }
+            // move right (directin always -1, 0 ro 1)
+            if (tmpDirection.x > 0 && targetPosX > Position.x)
+            {
+                float pos_x = Position.x + (speed * tmpDirection.x);
+                Position = new Vector3(pos_x, Position.y, Position.z);
+                return;
+            }
+            //now i can change direction
+            tmpDirection = resetDirection;
+            isSetPosition = true;
+        }
+
+        private void SetPosition()
+        {
+            // move left
+            if (isSetPosition && tmpDirection.x < 0 && Position.x <= targetPosX+deviation)
+            {
+                targetPosX -= step;
+                isSetPosition = false;
+            }
+            // move right
+            if (isSetPosition && tmpDirection.x > 0 && Position.x >= targetPosX-deviation)
+            {
+                targetPosX += step;
+                isSetPosition = false;
+            }
         }
     }
 }
