@@ -53,10 +53,13 @@ namespace CVRunner
             //    //Call the StartGameInScene function to start game without loading a new scene.
             //    StartGameInScene();
             //}
+            
+            //Pause button now works if escape is pressed since we are no longer in Main menu.
+            inMainMenu = false;
             Main.Instance.GetCameraMover.On();
             Main.Instance.GetPlayer.GetComponent<Animation>().Play();
+            //Hide the main menu UI element
             HideDelayed();
-
         }
 
         void OnEnable()
@@ -77,19 +80,6 @@ namespace CVRunner
             {
                 playMusic.PlayLevelMusic();
             }
-        }
-
-
-        public void LoadDelayed()
-        {
-            //Pause button now works if escape is pressed since we are no longer in Main menu.
-            inMainMenu = false;
-
-            //Hide the main menu UI element
-            showPanels.HideMenu();
-
-            //Load the selected scene, by scene index number in build settings
-            SceneManager.LoadScene(sceneToStart);
         }
 
         public void HideDelayed()
@@ -114,6 +104,12 @@ namespace CVRunner
             animMenuAlpha.SetTrigger("fade");
             Invoke("HideDelayed", fadeAlphaAnimationClip.length);
             Debug.Log("Game started in same scene! Put your game starting stuff here.");
+        }
+
+        public void RestartGame()
+        {
+            showPanels.HidePausePanel();
+            Application.LoadLevel(Application.loadedLevel);
         }
 
 
