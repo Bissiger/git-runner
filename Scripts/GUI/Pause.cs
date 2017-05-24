@@ -6,7 +6,7 @@ namespace CVRunner
     {
 
         private ShowPanels showPanels;      //Reference to the ShowPanels script used to hide and show UI panels
-        private bool isPaused;              //Boolean to check if the game is paused or not
+        private bool isPaused;       //Boolean to check if the game is paused or not
         private StartOptions startScript;   //Reference to the StartButton script
 
         //Awake is called before Start()
@@ -18,23 +18,37 @@ namespace CVRunner
             startScript = GetComponent<StartOptions>();
         }
 
+        //Property
+        public bool IsPaused
+        {
+            get { return isPaused; }
+        }
+
         // Update is called once per frame
         void Update()
         {
 
             //Check if the Cancel button in Input Manager is down this frame (default is Escape key) and that game is not paused, and that we're not in main menu
-            if (Input.GetButtonDown("Cancel") && !isPaused && !startScript.inMainMenu)
+            if (!isPaused)
             {
                 //Call the DoPause function to pause the game
-                DoPause();
+                if (startScript.inMainMenu)
+                {
+                    DoPause();
+                    return;
+                }
+                if(showPanels.optionsPanel.activeSelf)
+                {
+                    DoPause();
+                    return;
+                }
             }
             //If the button is pressed and the game is paused and not in main menu
-            else if (Input.GetButtonDown("Cancel") && isPaused && !startScript.inMainMenu)
+            else if (isPaused && !startScript.inMainMenu && !showPanels.optionsPanel.activeSelf)
             {
                 //Call the UnPause function to unpause the game
                 UnPause();
             }
-
         }
 
         public void DoPause()
@@ -43,8 +57,6 @@ namespace CVRunner
             isPaused = true;
             //Set time.timescale to 0, this will cause animations and physics to stop updating
             Time.timeScale = 0;
-            //call the ShowPausePanel function of the ShowPanels script
-            showPanels.ShowPausePanel();
         }
 
         public void UnPause()
@@ -53,8 +65,6 @@ namespace CVRunner
             isPaused = false;
             //Set time.timescale to 1, this will cause animations and physics to continue updating at regular speed
             Time.timeScale = 1;
-            //call the HidePausePanel function of the ShowPanels script
-            showPanels.HidePausePanel();
         }
     }
 }
