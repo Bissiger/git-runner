@@ -34,9 +34,12 @@ namespace CVRunner
 
         void Update()
         {
-            SetDirection(Main.Instance.GetDirectionController.GetDirection);
-            SetPosition();
-            Move();
+            if (!Main.Instance.GetPause.IsPaused)
+            {
+                SetDirection(Main.Instance.GetDirectionController.GetDirection);
+                SetPosition();
+                Move();
+            }
         }
 
         //Just set direction of moving
@@ -73,13 +76,13 @@ namespace CVRunner
         private void SetPosition()
         {
             // move left
-            if (isSetPosition && tmpDirection.x < 0 && Position.x <= targetPosX+deviation)
+            if (isSetPosition && tmpDirection.x < 0 && targetPosX-step > minCornerX-deviation)
             {
                 targetPosX -= step;
                 isSetPosition = false;
             }
             // move right
-            if (isSetPosition && tmpDirection.x > 0 && Position.x >= targetPosX-deviation)
+            if (isSetPosition && tmpDirection.x > 0 && targetPosX+step < maxCornerX+deviation)
             {
                 targetPosX += step;
                 isSetPosition = false;
