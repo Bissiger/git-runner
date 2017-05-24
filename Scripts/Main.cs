@@ -16,14 +16,16 @@ namespace CVRunner
         private DirectionController _directionController;
         private CameraMover _cameraMover;
         private GameObject _player;
+        private Pause _pause;
 
         private void Start()
         {
             Instance = this;
             _controllers = new GameObject { name = "AllControllers" };
             _directionController = _controllers.AddComponent<DirectionController>();
-            _cameraMover = GameObject.Find("Main Camera").transform.GetComponent<CameraMover>();
+            _cameraMover = GameObject.Find("Main Camera").GetComponent<CameraMover>();
             _player = Instantiate(Player);
+            _pause = GameObject.Find("UI").GetComponent<Pause>();
         }
 
         #region Property
@@ -47,6 +49,13 @@ namespace CVRunner
         public GameObject GetPlayer
         { 
             get { return _player; }
+        }
+        /// <summary>
+        /// Get link to Pause script
+        /// </summary>
+        public Pause GetPause
+        {
+            get { return _pause; }
         }
         #endregion
     }
