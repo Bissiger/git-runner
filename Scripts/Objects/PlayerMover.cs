@@ -19,19 +19,11 @@ namespace CVRunner
         //Step for set next target
         private float step = 3.4f;
 
-        //Position from player come
-        private float lastPos;
-
         //Helpers
         private Vector2 resetDirection = new Vector2(0, 0);
         private Vector2 tmpDirection = new Vector2(0,0);
         private bool isSetPosition = true;
       
-        private void Start()
-        {
-            lastPos = Position.x;
-        }
-
         void Update()
         {
             if (!Main.Instance.GetPause.IsPaused)
