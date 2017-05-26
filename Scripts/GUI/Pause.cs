@@ -44,7 +44,7 @@ namespace CVRunner
                 }
             }
             //If the button is pressed and the game is paused and not in main menu
-            else if (isPaused && !startScript.inMainMenu && !showPanels.optionsPanel.activeSelf)
+            else if (isPaused && !startScript.inMainMenu && !showPanels.optionsPanel.activeSelf && !showPanels.pausePanel.activeSelf)
             {
                 //Call the UnPause function to unpause the game
                 UnPause();
