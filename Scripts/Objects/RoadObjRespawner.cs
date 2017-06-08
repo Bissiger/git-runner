@@ -7,6 +7,9 @@ namespace CVRunner
     {
         //Prefabs of created game objects
         [SerializeField] private GameObject[] prefabObj;
+        //Additional acceleration for cars
+        [SerializeField] private float forward = 0.2f;
+        [SerializeField] private float backward = -0.2f;
 
         //All respawn poins on the road
         private Transform[] RespawnPoints;
@@ -59,7 +62,19 @@ namespace CVRunner
 
             GameObject tmpObj;
             tmpObj = Instantiate(prefabObj[objID], new Vector3(x,y,z), Quaternion.identity);
-            tmpObj.AddComponent<CityMover>();
+
+
+            if (posID == 0)
+            {
+                tmpObj.transform.rotation = new Quaternion(tmpObj.transform.rotation.x, 180, tmpObj.transform.rotation.z, tmpObj.transform.rotation.w);
+                CarNPC tmpScript = tmpObj.AddComponent<CarNPC>();
+                tmpScript.Acceleration = forward;
+            }
+            else
+            {
+                CarNPC tmpScript = tmpObj.AddComponent<CarNPC>();
+                tmpScript.Acceleration = backward;
+            }
             Destroy(tmpObj, lifeTime);
         }
     }
